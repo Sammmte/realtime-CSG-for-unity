@@ -1,4 +1,4 @@
-﻿// ===============================================================================================
+// ===============================================================================================
 //	The MIT License (MIT) for UnityFBXExporter
 //
 //  UnityFBXExporter was created for Building Crafter (http://u3d.as/ovC) a tool to rapidly 
@@ -522,14 +522,14 @@ namespace UnityFBXExporter
 							continue;
 						}
 						
-						int referenceId = Mathf.Abs(mat.GetInstanceID());
+						int referenceId = Mathf.Abs(mat.GetEntityId().GetHashCode());
 						tempConnectionsSb.AppendLine("\t;Material::" + mat.name + ", Model::" + mesh.name);
 						tempConnectionsSb.AppendLine("\tC: \"OO\"," + referenceId + "," + modelId);
 						tempConnectionsSb.AppendLine();
 					}
 				} else
 				{
-					int referenceId = Mathf.Abs(colliderMaterial.GetInstanceID());
+					int referenceId = Mathf.Abs(colliderMaterial.GetEntityId().GetHashCode());
 					tempConnectionsSb.AppendLine("\t;Material::" + colliderMaterial.name + ", Model::" + mesh.name);
 					tempConnectionsSb.AppendLine("\tC: \"OO\"," + referenceId + "," + modelId);
 					tempConnectionsSb.AppendLine();

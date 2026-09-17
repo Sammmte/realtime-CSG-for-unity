@@ -57,8 +57,8 @@ namespace RealtimeCSG.Legacy
 									  (castShadows    ? LayerUsageFlags.CastShadows    : LayerUsageFlags.None) |
 									  (collidable     ? LayerUsageFlags.Collidable     : LayerUsageFlags.None);
 			
-			layers.layerParameter1	= (texGen.RenderMaterial ) ? texGen.RenderMaterial.GetInstanceID()  : 0;
-			layers.layerParameter2	= (texGen.PhysicsMaterial) ? texGen.PhysicsMaterial.GetInstanceID() : 0;
+			layers.layerParameter1	= (texGen.RenderMaterial ) ? EntityIdRegistry.GetOrCreateId(texGen.RenderMaterial)  : 0;
+			layers.layerParameter2	= (texGen.PhysicsMaterial) ? EntityIdRegistry.GetOrCreateId(texGen.PhysicsMaterial) : 0;
 			layers.layerParameter3	= 0;
 
 			return layers;

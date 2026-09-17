@@ -46,7 +46,7 @@ namespace InternalRealtimeCSG
 				if (SharedMesh.vertexCount < 0)
 					return false;
 			} else
-			if (SharedMesh.GetInstanceID() != 0)
+			if (SharedMesh.GetEntityId() != EntityId.None)
 				return false;
 			return true;
 		}

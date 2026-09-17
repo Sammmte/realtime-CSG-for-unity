@@ -464,7 +464,7 @@ namespace RealtimeCSG
 				return "null";
 			if (!mat)
 				return "invalid";
-			return mat.name + " " + mat.GetInstanceID().ToString();
+			return mat.name + " " + mat.GetEntityId().ToString();
 		}
 
 		bool UndoRevert()

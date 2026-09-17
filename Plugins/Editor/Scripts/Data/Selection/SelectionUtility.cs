@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -324,7 +324,7 @@ namespace RealtimeCSG
 			var undoGroupIndex  = Undo.GetCurrentGroup();
 
 			var selected		= Selection.gameObjects.ToList();
-			var selectedIDs		= new HashSet<int>();
+			var selectedIDs		= new HashSet<EntityId>();
 
 			var models = InternalCSGModelManager.Models;
 			for (var i = 0; i < models.Length; i++)
@@ -343,7 +343,7 @@ namespace RealtimeCSG
 
 			for (int i = 0; i < selected.Count; i++) // we keep adding parents, and their parents until we hit the root-objects
 			{
-				selectedIDs.Add(selected[i].GetInstanceID());
+				selectedIDs.Add(selected[i].GetEntityId());
 				var transform = selected[i].transform;
 				var parent    = transform.parent;
 				if (parent == null)
@@ -365,7 +365,7 @@ namespace RealtimeCSG
 						if (!gameObject.activeInHierarchy || (gameObject.hideFlags != HideFlags.None))
 							continue;
 
-						if (selectedIDs.Contains(gameObject.GetInstanceID()))
+						if (selectedIDs.Contains(gameObject.GetEntityId()))
 							continue;
 
 						Undo.RecordObject(gameObject, "Hiding Object");
@@ -387,27 +387,27 @@ namespace RealtimeCSG
             
 			gameobject = SceneQueryUtility.FindSelectionBase(gameobject);
 
-            var selectedObjectsOnClick = new List<int>(Selection.instanceIDs);
+            var selectedObjectsOnClick = new List<EntityId>(Selection.entityIds);
 			bool addedSelection = false;
 			if (EditorGUI.actionKey)
 			{
 				if (gameobject != null)
 				{
-					var instanceID = gameobject.GetInstanceID();
-					if (selectedObjectsOnClick.Contains(instanceID))
+					var entityId = gameobject.GetEntityId();
+					if (selectedObjectsOnClick.Contains(entityId))
 					{
-						selectedObjectsOnClick.Remove(instanceID);
+						selectedObjectsOnClick.Remove(entityId);
 					}
 					else
 					{
-						selectedObjectsOnClick.Add(instanceID);
+						selectedObjectsOnClick.Add(entityId);
 						addedSelection = true;
 					}
 
 					if (selectedObjectsOnClick.Count == 0)
 						Selection.activeTransform = null;
 					else
-						Selection.instanceIDs = selectedObjectsOnClick.ToArray();
+						Selection.entityIds = selectedObjectsOnClick.ToArray();
 				}
 			}
 			else
@@ -415,9 +415,9 @@ namespace RealtimeCSG
 			{
 				if (gameobject != null)
 				{
-					var instanceID = gameobject.GetInstanceID();
-					selectedObjectsOnClick.Add(instanceID);
-					Selection.instanceIDs = selectedObjectsOnClick.ToArray();
+					var entityId = gameobject.GetEntityId();
+					selectedObjectsOnClick.Add(entityId);
+					Selection.entityIds = selectedObjectsOnClick.ToArray();
 					addedSelection = true;
 				}
 			}
@@ -426,9 +426,9 @@ namespace RealtimeCSG
 			{
 				if (gameobject != null)
 				{
-					var instanceID = gameobject.GetInstanceID();
-					selectedObjectsOnClick.Remove(instanceID);
-					Selection.instanceIDs = selectedObjectsOnClick.ToArray();
+					var entityId = gameobject.GetEntityId();
+					selectedObjectsOnClick.Remove(entityId);
+					Selection.entityIds = selectedObjectsOnClick.ToArray();
 					return;
 				}
 			}

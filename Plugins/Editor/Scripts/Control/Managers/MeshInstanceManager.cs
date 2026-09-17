@@ -9,7 +9,7 @@ using RealtimeCSG.Foundation;
 using RealtimeCSG.Components;
 using UnityEditor.SceneManagement;
 #if UNITY_2018_3_OR_NEWER
-using UnityEditor.Experimental.SceneManagement;
+
 #endif
 
 namespace InternalRealtimeCSG
@@ -700,16 +700,16 @@ namespace InternalRealtimeCSG
 
 
 			Material renderMaterial = null;
-			PhysicMaterial physicsMaterial = null;
+			PhysicsMaterial physicsMaterial = null;
 			if (meshDescription.surfaceParameter != 0)
 			{
-				var obj = EditorUtility.InstanceIDToObject(meshDescription.surfaceParameter);
+				var obj = EntityIdRegistry.IdToObject(meshDescription.surfaceParameter);
 				if (obj)
 				{
 					switch (meshDescription.meshQuery.LayerParameterIndex)
 					{
 						case LayerParameterIndex.RenderMaterial:  { renderMaterial  = obj as Material; break; }
-						case LayerParameterIndex.PhysicsMaterial: { physicsMaterial = obj as PhysicMaterial; break; }
+						case LayerParameterIndex.PhysicsMaterial: { physicsMaterial = obj as PhysicsMaterial; break; }
 					}
 				}
 			}
@@ -790,7 +790,7 @@ namespace InternalRealtimeCSG
 			}
 			
 			sharedMesh = new Mesh();
-			sharedMesh.name = $"<{baseName} generated {sharedMesh.GetInstanceID()}>";
+			sharedMesh.name = $"<{baseName} generated {sharedMesh.GetEntityId()}>";
 			sharedMesh.MarkDynamic();
             if (editorOnly)
                 sharedMesh.hideFlags = HideFlags.DontSaveInBuild;
@@ -976,7 +976,7 @@ namespace InternalRealtimeCSG
 				return "null";
 			if (!mat)
 				return "invalid";
-			return mat.name + " " + mat.GetInstanceID().ToString();
+			return mat.name + " " + mat.GetEntityId().ToString();
 		}
 
 		public static void ClearUVs(CSGModel model)

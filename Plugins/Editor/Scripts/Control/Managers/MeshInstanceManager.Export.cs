@@ -1,4 +1,4 @@
-﻿//#define SHOW_GENERATED_MESHES
+//#define SHOW_GENERATED_MESHES
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
@@ -294,7 +294,7 @@ namespace InternalRealtimeCSG
 						if (!int.TryParse(nameSplit[1], out instanceId))
 							continue;
 
-						var realMaterial = EditorUtility.InstanceIDToObject(instanceId) as Material;
+						var realMaterial = EntityIdRegistry.IdToObject(instanceId) as Material;
 						if (!realMaterial)
 							continue;
 						

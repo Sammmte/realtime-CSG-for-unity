@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using InternalRealtimeCSG;
 using System;
@@ -72,8 +72,13 @@ namespace RealtimeCSG
     #endif
 #endif
 
-            EditorApplication.hierarchyWindowItemOnGUI	-= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
-			EditorApplication.hierarchyWindowItemOnGUI	+= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+            #if UNITY_6000_5_OR_NEWER
+                        EditorApplication.hierarchyWindowItemByEntityIdOnGUI	-= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+            			EditorApplication.hierarchyWindowItemByEntityIdOnGUI	+= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+            #else
+                        EditorApplication.hierarchyWindowItemOnGUI	-= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+            			EditorApplication.hierarchyWindowItemOnGUI	+= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+            #endif
 			
 			UnityCompilerDefineManager.UpdateUnityDefines();
 		}
@@ -103,7 +108,11 @@ namespace RealtimeCSG
 #else
 			EditorApplication.hierarchyWindowChanged	-= OnHierarchyWindowChanged;
 #endif
+#if UNITY_6000_5_OR_NEWER
+			EditorApplication.hierarchyWindowItemByEntityIdOnGUI	-= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+#else
 			EditorApplication.hierarchyWindowItemOnGUI	-= HierarchyWindowItemGUI.OnHierarchyWindowItemOnGUI;
+#endif
 
 #if UNITY_2019_1_OR_NEWER
 			SceneView.duringSceneGui					-= SceneViewEventHandler.OnScene;

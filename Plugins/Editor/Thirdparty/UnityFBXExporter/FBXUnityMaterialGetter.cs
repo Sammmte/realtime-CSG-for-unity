@@ -1,4 +1,4 @@
-﻿// ===============================================================================================
+// ===============================================================================================
 //	The MIT License (MIT) for UnityFBXExporter
 //
 //  UnityFBXExporter was created for Building Crafter (http://u3d.as/ovC) a tool to rapidly 
@@ -99,7 +99,7 @@ namespace UnityFBXExporter
 				if(copyMaterials)
 					materialName = gameObj.name + "_" + mat.name;
 
-				int referenceId = Mathf.Abs(mat.GetInstanceID());
+				int referenceId = Mathf.Abs(mat.GetEntityId().GetHashCode());
 
                 var color = Color.white;
                 if (mat.HasProperty("_Color"))
@@ -222,7 +222,7 @@ namespace UnityFBXExporter
 			StringBuilder objectsSb = new StringBuilder();
 			StringBuilder connectionsSb = new StringBuilder();
 
-			int materialId = Mathf.Abs(material.GetInstanceID());
+			int materialId = Mathf.Abs(material.GetEntityId().GetHashCode());
 
 			Texture mainTexture = material.GetTexture("_MainTex");
 

@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using UnityEditor;
 using UnityEngine;
 using RealtimeCSG.Components;
@@ -167,7 +167,7 @@ namespace RealtimeCSG
 			if (outlines2D == null)
 				Update();
 
-			var instanceID = Mathf.Abs(brush.GetInstanceID());
+			var instanceID = Mathf.Abs(brush.GetEntityId().GetHashCode());
 			return outlines2D[instanceID % outlines2D.Length];
 		}
 

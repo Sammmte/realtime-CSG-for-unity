@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -440,7 +440,7 @@ namespace RealtimeCSG
         static void LegacyLoadWireframeSettings(List<SceneView> sceneViews, string arrayString)
         {
             var items		= arrayString.Split(',');
-            var ids			= new int[items.Length];
+            var ids			= new EntityId[items.Length];
             var enabled		= new bool[items.Length];
             for (int j=items.Length - 1;j>=0;j--)
             {
@@ -453,25 +453,25 @@ namespace RealtimeCSG
                     !Int32.TryParse(sub_item[0], out id) ||
                     !Boolean.TryParse(sub_item[1], out is_enabled))
                 {
-                    ids[j] = 0;
+                    ids[j] = EntityId.None;
                     enabled[j] = false;
                     continue;
                 }
-                ids[j]		= id;
+                ids[j]		= EntityIdRegistry.GetEntityId(id);
                 enabled[j]	= is_enabled;
             }
 
             wireframeSceneviews.Clear();
-            var wireframeInstanceIDs = new int[items.Length];
+            var wireframeInstanceIDs = new EntityId[items.Length];
             if (sceneViews.Count != items.Length)
             {
-                wireframeInstanceIDs = new int[0];
+                wireframeInstanceIDs = new EntityId[0];
             } else
             {
                 bool found_all = true;
                 for (int j = 0; j < sceneViews.Count; j++)
                 {
-                    if (!ArrayUtility.Contains(ids, sceneViews[j].GetInstanceID()))
+                    if (!ArrayUtility.Contains(ids, sceneViews[j].GetEntityId()))
                     {
                         found_all = false;
                         break;
@@ -498,14 +498,14 @@ namespace RealtimeCSG
                             ArrayUtility.RemoveAt(ref wireframeInstanceIDs, j);
                             continue;
                         }
-                        wireframeInstanceIDs[j] = sceneViews[j].GetInstanceID();
+                        wireframeInstanceIDs[j] = sceneViews[j].GetEntityId();
                     }
                 }
             }
 
             for (int i = 0; i < sceneViews.Count; i++)
             {
-                if (ArrayUtility.Contains(wireframeInstanceIDs, sceneViews[i].GetInstanceID()))
+                if (ArrayUtility.Contains(wireframeInstanceIDs, sceneViews[i].GetEntityId()))
                 {
                     wireframeSceneviews.Add(sceneViews[i].name);
                 }

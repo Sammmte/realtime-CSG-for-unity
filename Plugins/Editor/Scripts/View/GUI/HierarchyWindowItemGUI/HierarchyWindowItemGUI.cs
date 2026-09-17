@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEditor;
 using RealtimeCSG.Foundation;
 using RealtimeCSG.Components;
@@ -7,12 +7,21 @@ namespace RealtimeCSG
 {
 	internal sealed class HierarchyWindowItemGUI
 	{
-		internal static void OnHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
-		{
-			if (EditorApplication.isPlayingOrWillChangePlaymode)
-				return;
+		#if UNITY_6000_5_OR_NEWER
+				internal static void OnHierarchyWindowItemOnGUI(EntityId instanceID, Rect selectionRect)
+				{
+					if (EditorApplication.isPlayingOrWillChangePlaymode)
+						return;
 
-			var o = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+					var o = EditorUtility.EntityIdToObject(instanceID) as GameObject;
+		#else
+				internal static void OnHierarchyWindowItemOnGUI(int instanceID, Rect selectionRect)
+				{
+					if (EditorApplication.isPlayingOrWillChangePlaymode)
+						return;
+
+					var o = EditorUtility.InstanceIDToObject(instanceID) as GameObject;
+		#endif
 
 			if (selectionRect.Contains(Event.current.mousePosition))
 			{

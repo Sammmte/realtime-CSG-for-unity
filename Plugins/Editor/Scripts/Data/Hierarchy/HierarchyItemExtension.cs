@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using RealtimeCSG.Components;
@@ -7,7 +7,7 @@ namespace RealtimeCSG
 {
 	internal static class HierarchyItemExtension
 	{
-		internal static bool FindSiblingIndex(this HierarchyItem self, Transform searchTransform, int siblingIndex, int searchTransformID, out int index)
+		internal static bool FindSiblingIndex(this HierarchyItem self, Transform searchTransform, int siblingIndex, EntityId searchTransformID, out int index)
 		{
 			if (self.ChildNodes == null ||
 				self.ChildNodes.Length == 0)
@@ -192,7 +192,7 @@ namespace RealtimeCSG
 		public static void Init(this HierarchyItem self, CSGNode node, Int32 nodeID)
 		{
 			self.Transform		= node.transform;
-			self.TransformID	= node.transform.GetInstanceID();
+			self.TransformID	= node.transform.GetEntityId();
 			self.NodeID			= nodeID;
 		}
 	}

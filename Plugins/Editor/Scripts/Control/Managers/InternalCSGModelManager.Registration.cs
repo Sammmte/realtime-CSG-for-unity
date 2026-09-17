@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -222,7 +222,7 @@ namespace RealtimeCSG
 			bool dirty = false;
 
 			var statement1 = !System.Object.ReferenceEquals(component, null) && 
-							component.hierarchyItem.TransformID == 0;
+							component.hierarchyItem.TransformID == EntityId.None;
 			var statement3 = component.brushNodeID != CSGNode.InvalidNodeID;
 			var statement4 = statement1 && statement3;
 
@@ -230,7 +230,7 @@ namespace RealtimeCSG
 			{
 				dirty = component.hierarchyItem.TransformInitialized || dirty;
 				component.hierarchyItem.Transform	= component.transform;
-				component.hierarchyItem.TransformID	= component.transform.GetInstanceID();
+				component.hierarchyItem.TransformID	= component.transform.GetEntityId();
 				component.hierarchyItem.NodeID		= component.brushNodeID;
                 component.hierarchyItem.TransformInitialized = true;
 
@@ -341,11 +341,11 @@ namespace RealtimeCSG
 				return;
 			}
 
-			if (component.ParentData.TransformID == 0 &&
+			if (component.ParentData.TransformID == EntityId.None &&
 				component.operationNodeID != CSGNode.InvalidNodeID)
 			{
 				component.ParentData.Transform		= component.transform;
-				component.ParentData.TransformID	= component.transform.GetInstanceID();
+				component.ParentData.TransformID	= component.transform.GetEntityId();
 				component.ParentData.NodeID			= component.operationNodeID;
 			}
 		}
@@ -436,11 +436,11 @@ namespace RealtimeCSG
 				return;
 			}
 
-            if (component.parentData.TransformID == 0 &&
+            if (component.parentData.TransformID == EntityId.None &&
 				component.modelNodeID != CSGNode.InvalidNodeID)
 			{
 				component.parentData.Transform		= component.transform;
-				component.parentData.TransformID	= component.transform.GetInstanceID();
+				component.parentData.TransformID	= component.transform.GetEntityId();
 				component.parentData.NodeID			= component.modelNodeID;
 			}
 		}
@@ -494,7 +494,7 @@ namespace RealtimeCSG
 				return;
 			}
 
-			if (!External.GenerateBrush(brush.GetInstanceID(), out brush.brushNodeID))
+			if (!External.GenerateBrush(EntityIdRegistry.GetOrCreateId(brush), out brush.brushNodeID))
 			{
 				Debug.LogError("Failed to generate ID for brush", brush);
 				return;
@@ -582,7 +582,7 @@ namespace RealtimeCSG
 				return;
 			}
 
-			if (!External.GenerateOperation(op.GetInstanceID(), out op.operationNodeID))
+			if (!External.GenerateOperation(EntityIdRegistry.GetOrCreateId(op), out op.operationNodeID))
 			{
 				Debug.LogError("Failed to generate ID for operation");
 				return;
@@ -654,7 +654,7 @@ namespace RealtimeCSG
             if (!model.DefaultPhysicsMaterial)
                 model.DefaultPhysicsMaterial = MaterialUtility.DefaultPhysicsMaterial;
 
-            if (!External.GenerateModel(model.GetInstanceID(), out model.modelNodeID))
+            if (!External.GenerateModel(EntityIdRegistry.GetOrCreateId(model), out model.modelNodeID))
 			{
 				Debug.LogError("Failed to generate ID for model named " + model.name);
 				return;
@@ -698,7 +698,7 @@ namespace RealtimeCSG
 			if (brushMeshID != CSGNode.InvalidNodeID)
 				return External.UpdateBrushMesh(brushMeshID, brushMesh);
 
-			brushMeshID = External.CreateBrushMesh(brush.GetInstanceID(), brushMesh);
+			brushMeshID = External.CreateBrushMesh(EntityIdRegistry.GetOrCreateId(brush), brushMesh);
 			return External.SetBrushMeshID(brush.brushNodeID, brushMeshID);
 		}
 		#endregion
