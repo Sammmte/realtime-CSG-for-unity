@@ -17,7 +17,6 @@ namespace RealtimeCSG
 
     internal class EditorModeOverlay: ToolbarOverlay
     {
-        public const string iconPath = "Packages/com.prenominal.realtimecsg/Plugins/Editor/Resources/GUI/";
         public const string _id = "RealtimeCSG";
 
         public EditorModeOverlay()
@@ -33,6 +32,11 @@ namespace RealtimeCSG
         {
         }
 
+        public static Texture2D GetIcon(string iconName)
+        {
+            return Resources.Load<Texture2D>($"GUI/{iconName}");
+        }
+
     }
 
     [EditorToolbarElement(_id, typeof(SceneView))]
@@ -43,8 +47,8 @@ namespace RealtimeCSG
         {
             tooltip = "Toggle CSG Realtime";
             
-            onIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EditorModeOverlay.iconPath + "CSG_Icon.png");
-            offIcon = AssetDatabase.LoadAssetAtPath<Texture2D>(EditorModeOverlay.iconPath + "CSG_Icon_off.png");
+            onIcon = EditorModeOverlay.GetIcon("CSG_Icon");
+            offIcon = EditorModeOverlay.GetIcon("CSG_Icon_off");
             
             this.RegisterValueChangedCallback(x => OnClicked());
             CSGSettings.OnRealtimeCSGEnabledChanged += OnRealtimeCSGEnabledChanged;
@@ -79,7 +83,7 @@ namespace RealtimeCSG
             ToolTip tt = CSG_GUIStyleUtility.brushEditModeTooltips[(int)mode];
             tooltip = $"{tt.TitleString()}\n{tt.ContentsString()}\n{tt.KeyString()}";
 
-            icon = AssetDatabase.LoadAssetAtPath<Texture2D>(EditorModeOverlay.iconPath + iconName);
+            icon = EditorModeOverlay.GetIcon(iconName);
 
             this.RegisterValueChangedCallback(x => OnClicked());
 
@@ -108,7 +112,7 @@ namespace RealtimeCSG
     internal class PlaceEditorModeButton : EditorModeButton
     {
         public const string _id = EditorModeOverlay._id + "/Place";
-        public PlaceEditorModeButton() : base ("Place.png", ToolEditMode.Place){}
+        public PlaceEditorModeButton() : base ("Place", ToolEditMode.Place){}
     }
 
 
@@ -116,28 +120,28 @@ namespace RealtimeCSG
     internal class GenerateEditorModeButton : EditorModeButton
     {
         public const string _id = EditorModeOverlay._id + "/Generate";
-        public GenerateEditorModeButton() : base("Generate.png", ToolEditMode.Generate) { }
+        public GenerateEditorModeButton() : base("Generate", ToolEditMode.Generate) { }
     }
 
     [EditorToolbarElement(_id, typeof(SceneView))]
     internal class EditEditorModeButton : EditorModeButton
     {
         public const string _id = EditorModeOverlay._id + "/Edit";
-        public EditEditorModeButton() : base("Edit.png", ToolEditMode.Edit) { }
+        public EditEditorModeButton() : base("Edit", ToolEditMode.Edit) { }
     }
 
     [EditorToolbarElement(_id, typeof(SceneView))]
     internal class ClipEditorModeButton : EditorModeButton
     {
         public const string _id = EditorModeOverlay._id + "/Clip";
-        public ClipEditorModeButton() : base("Clip.png", ToolEditMode.Clip) { }
+        public ClipEditorModeButton() : base("Clip", ToolEditMode.Clip) { }
     }
 
     [EditorToolbarElement(_id, typeof(SceneView))]
     internal class SurfaceEditorModeButton : EditorModeButton
     {
         public const string _id = EditorModeOverlay._id + "/Surfaces";
-        public SurfaceEditorModeButton() : base("Surface.png", ToolEditMode.Surfaces) { }
+        public SurfaceEditorModeButton() : base("Surface", ToolEditMode.Surfaces) { }
     }
 
 #endregion
